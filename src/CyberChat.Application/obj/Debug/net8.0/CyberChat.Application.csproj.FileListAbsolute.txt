@@ -1,0 +1,15 @@
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Application\obj\Debug\net8.0\CyberChat.Application.csproj.AssemblyReference.cache
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Application\obj\Debug\net8.0\CyberChat.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Application\obj\Debug\net8.0\CyberChat.Application.AssemblyInfoInputs.cache
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Application\obj\Debug\net8.0\CyberChat.Application.AssemblyInfo.cs
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Application\obj\Debug\net8.0\CyberChat.Application.csproj.CoreCompileInputs.cache
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Application\bin\Debug\net8.0\CyberChat.Application.deps.json
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Application\bin\Debug\net8.0\CyberChat.Application.dll
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Application\bin\Debug\net8.0\CyberChat.Application.pdb
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Application\bin\Debug\net8.0\CyberChat.Domain.dll
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Application\bin\Debug\net8.0\CyberChat.Domain.pdb
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Application\obj\Debug\net8.0\CyberCha.DE184D73.Up2Date
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Application\obj\Debug\net8.0\CyberChat.Application.dll
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Application\obj\Debug\net8.0\refint\CyberChat.Application.dll
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Application\obj\Debug\net8.0\CyberChat.Application.pdb
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Application\obj\Debug\net8.0\ref\CyberChat.Application.dll

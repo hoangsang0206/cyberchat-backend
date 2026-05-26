@@ -1,0 +1,11 @@
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Domain\bin\Debug\net8.0\CyberChat.Domain.deps.json
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Domain\bin\Debug\net8.0\CyberChat.Domain.dll
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Domain\bin\Debug\net8.0\CyberChat.Domain.pdb
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Domain\obj\Debug\net8.0\CyberChat.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Domain\obj\Debug\net8.0\CyberChat.Domain.AssemblyInfoInputs.cache
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Domain\obj\Debug\net8.0\CyberChat.Domain.AssemblyInfo.cs
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Domain\obj\Debug\net8.0\CyberChat.Domain.csproj.CoreCompileInputs.cache
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Domain\obj\Debug\net8.0\CyberChat.Domain.dll
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Domain\obj\Debug\net8.0\refint\CyberChat.Domain.dll
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Domain\obj\Debug\net8.0\CyberChat.Domain.pdb
+D:\Study\Projects\CyberChat\CyberChatBE\src\CyberChat.Domain\obj\Debug\net8.0\ref\CyberChat.Domain.dll

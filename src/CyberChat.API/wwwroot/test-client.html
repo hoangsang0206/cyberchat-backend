@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberChat SignalR Test Client</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a2e;
+            color: #e2e2e2;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #162447;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            color: #00adb5;
+            text-align: center;
+            margin-top: 0;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #1f4068;
+            border-radius: 4px;
+            background: #1f4068;
+            color: #fff;
+            box-sizing: border-box;
+        }
+        .btn {
+            background-color: #00adb5;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background-color: #007780;
+        }
+        .btn-danger {
+            background-color: #e94560;
+        }
+        .btn-danger:hover {
+            background-color: #b33046;
+        }
+        .panel {
+            border: 1px solid #1f4068;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            background: #1f4068;
+        }
+        #log {
+            height: 300px;
+            overflow-y: auto;
+            background: #1a1a2e;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            border: 1px solid #162447;
+        }
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 5px;
+            border-bottom: 1px solid #1f4068;
+        }
+        .info { color: #00adb5; }
+        .success { color: #4ecca3; }
+        .error { color: #e94560; }
+        .broadcast { color: #ffb703; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CyberChat SignalR Test Client</h1>
+        
+        <div class="form-group">
+            <label for="hubUrl">SignalR Hub URL</label>
+            <input type="text" id="hubUrl" value="http://localhost:5000/hubs/chat">
+        </div>
+
+        <div class="form-group">
+            <label for="token">JWT Token (AccessToken)</label>
+            <textarea id="token" rows="3" placeholder="Paste your authentication access token here..."></textarea>
+        </div>
+
+        <div>
+            <button class="btn" id="connectBtn">Connect</button>
+            <button class="btn btn-danger" id="disconnectBtn" disabled>Disconnect</button>
+            <span id="status" style="margin-left: 15px; font-weight: bold; color: #e94560;">Disconnected</span>
+        </div>
+
+        <div class="panel">
+            <h3>Send Hub Event Commands</h3>
+            <div class="form-group">
+                <label for="convId">Conversation ID (Guid)</label>
+                <input type="text" id="convId" placeholder="e.g. d5d774f2-51e4-4c4c-83b3-764956c32145">
+            </div>
+            
+            <button class="btn" id="typingBtn" disabled>Send Typing Status (5s)</button>
+            <button class="btn" id="readBtn" disabled>Mark as Read</button>
+        </div>
+
+        <div class="panel">
+            <h3>Event Logs</h3>
+            <div id="log"></div>
+            <button class="btn" style="margin-top: 10px;" onclick="document.getElementById('log').innerHTML=''">Clear Logs</button>
+        </div>
+    </div>
+
+    <script>
+        let connection = null;
+        const logDiv = document.getElementById("log");
+        const connectBtn = document.getElementById("connectBtn");
+        const disconnectBtn = document.getElementById("disconnectBtn");
+        const statusSpan = document.getElementById("status");
+        const typingBtn = document.getElementById("typingBtn");
+        const readBtn = document.getElementById("readBtn");
+
+        function log(message, type = "info") {
+            const entry = document.createElement("div");
+            entry.className = `log-entry ${type}`;
+            entry.innerText = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        connectBtn.addEventListener("click", () => {
+            const hubUrl = document.getElementById("hubUrl").value;
+            const token = document.getElementById("token").value.trim();
+
+            if (!token) {
+                log("Please provide a JWT token first.", "error");
+                return;
+            }
+
+            log(`Connecting to ${hubUrl}...`);
+            
+            connection = new signalR.HubConnectionBuilder()
+                .withUrl(`${hubUrl}?access_token=${token}`)
+                .withAutomaticReconnect()
+                .build();
+
+            // Set up listener events
+            connection.on("OnMessageReceived", (data) => {
+                log(`[OnMessageReceived] Message: ${JSON.stringify(data)}`, "broadcast");
+            });
+
+            connection.on("OnMessageEdited", (data) => {
+                log(`[OnMessageEdited] Message: ${JSON.stringify(data)}`, "broadcast");
+            });
+
+            connection.on("OnMessageDeleted", (data) => {
+                log(`[OnMessageDeleted] Payload: ${JSON.stringify(data)}`, "broadcast");
+            });
+
+            connection.on("OnMessageReacted", (data) => {
+                log(`[OnMessageReacted] Reaction: ${JSON.stringify(data)}`, "broadcast");
+            });
+
+            connection.on("OnUserPresenceChanged", (data) => {
+                log(`[OnUserPresenceChanged] Presence: ${JSON.stringify(data)}`, "broadcast");
+            });
+
+            connection.on("OnUserTyping", (data) => {
+                log(`[OnUserTyping] Typing: ${JSON.stringify(data)}`, "broadcast");
+            });
+
+            connection.on("OnMessageSeen", (data) => {
+                log(`[OnMessageSeen] Seen: ${JSON.stringify(data)}`, "broadcast");
+            });
+
+            connection.on("OnFriendRequestReceived", (data) => {
+                log(`[OnFriendRequestReceived] Friend Request: ${JSON.stringify(data)}`, "broadcast");
+            });
+
+            connection.on("OnFriendRequestAccepted", (data) => {
+                log(`[OnFriendRequestAccepted] Accepted: ${JSON.stringify(data)}`, "broadcast");
+            });
+
+            connection.on("OnStoryReceived", (data) => {
+                log(`[OnStoryReceived] Story: ${JSON.stringify(data)}`, "broadcast");
+            });
+
+            connection.on("OnTodoReminder", (data) => {
+                log(`[OnTodoReminder] Reminder: ${JSON.stringify(data)}`, "broadcast");
+            });
+
+            connection.start()
+                .then(() => {
+                    log("Connected successfully!", "success");
+                    statusSpan.innerText = "Connected";
+                    statusSpan.style.color = "#4ecca3";
+                    
+                    connectBtn.disabled = true;
+                    disconnectBtn.disabled = false;
+                    typingBtn.disabled = false;
+                    readBtn.disabled = false;
+                })
+                .catch(err => {
+                    log(`Connection failed: ${err.message}`, "error");
+                });
+        });
+
+        disconnectBtn.addEventListener("click", () => {
+            if (connection) {
+                connection.stop().then(() => {
+                    log("Disconnected.", "info");
+                    statusSpan.innerText = "Disconnected";
+                    statusSpan.style.color = "#e94560";
+
+                    connectBtn.disabled = false;
+                    disconnectBtn.disabled = true;
+                    typingBtn.disabled = true;
+                    readBtn.disabled = true;
+                });
+            }
+        });
+
+        typingBtn.addEventListener("click", () => {
+            const convId = document.getElementById("convId").value.trim();
+            if (!convId) {
+                log("Please provide a Conversation ID.", "error");
+                return;
+            }
+            log(`Sending typing indicator = true for conversation ${convId}...`);
+            connection.invoke("SendTypingStatus", convId, true)
+                .then(() => log("Sent typing status.", "success"))
+                .catch(err => log(`Failed: ${err.message}`, "error"));
+        });
+
+        readBtn.addEventListener("click", () => {
+            const convId = document.getElementById("convId").value.trim();
+            if (!convId) {
+                log("Please provide a Conversation ID.", "error");
+                return;
+            }
+            log(`Marking conversation ${convId} as read...`);
+            connection.invoke("MarkAsRead", convId)
+                .then(() => log("Sent mark as read status.", "success"))
+                .catch(err => log(`Failed: ${err.message}`, "error"));
+        });
+    </script>
+</body>
+</html>
